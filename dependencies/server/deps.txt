@@ -1,0 +1,11 @@
+# python
+python-requests
+python-pymongo
+python-yaml
+
+# perl
+libhttp-cookies-perl
+libjson-perl
+liblwp-useragent-determined-perl
+libnagios-plugin-perl
+libnet-ip-perl
