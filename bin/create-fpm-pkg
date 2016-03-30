@@ -1,0 +1,61 @@
+#!/bin/bash
+
+function build_pkg() {
+  target=$1
+  output_dir=$2
+  description="BJN icinga $target plugins"
+  dependencies=$(./bin/find-deb-pkg-names $target)
+  dependencies="nagios-plugins nagios-plugins-basic nagios-plugins-standard nagios-plugins-extra $dependencies"
+  license="Apache"
+  maintainer="Saurabh Hirani"
+  name="fpm-demo-$target-plugins"
+  provides="${name}"
+  url="https://github.com/saurabh-hirani/fpm-docker-demo"
+  vendor="Saurabh Hirani"
+
+  ncommits=$(git log --oneline | wc -l)
+  last_commit=$(git log --oneline | head -1 | cut -f1 -d' ')
+  version="$ncommits.$last_commit"
+  
+  # Dependencies
+  fpm_dependencies=""
+  for dependency in $dependencies; do
+    fpm_dependencies="$(echo $fpm_dependencies) -d $dependency"
+  done
+
+  # Create the package
+  old_dir=$(pwd)
+  cd ./install_dir/$target
+  fpm \
+    -s dir \
+    -t deb \
+    -a "all" \
+    -n "${name}" \
+    -v "${version}" \
+    --provides "${provides}" \
+    --description "${description}" \
+    --maintainer "${maintainer}" \
+    --vendor "${vendor}" \
+    --url "${url}" \
+    --exclude "*.md" \
+    --exclude "packaging" \
+    --exclude "*.deb" \
+    --license "${license}" \
+    ${fpm_dependencies} \
+    *
+  mkdir -p $output_dir
+  mv *.deb $output_dir
+  cd $old_dir
+}
+
+usage="build_pkg client|server"
+target=$1
+output_dir=$2
+
+if [ "X$target" != "Xclient" ] && \
+   [ "X$target" != "Xserver" ]; then
+  echo "Invalid value provided for target - $target"
+  echo "$usage"
+  exit 1
+fi
+build_pkg $target $output_dir
