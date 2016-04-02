@@ -1,6 +1,6 @@
 # fpm-docker-demo
 
-Build packages using a [https://github.com/jordansissel/fpm/wiki](fpm) via docker
+Build packages using a [fpm](https://github.com/jordansissel/fpm/wiki) via docker
 
 - Running
 
