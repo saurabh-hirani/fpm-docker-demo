@@ -15,7 +15,7 @@ function build_pkg() {
 
   ncommits=$(git log --oneline | wc -l)
   last_commit=$(git log --oneline | head -1 | cut -f1 -d' ')
-  version="$ncommits.$last_commit"
+  version="${ncommits}_${last_commit}"
   
   # Dependencies
   fpm_dependencies=""

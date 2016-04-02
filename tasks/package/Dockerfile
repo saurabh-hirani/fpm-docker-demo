@@ -4,6 +4,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 COPY . /build
 
-RUN cd /build && bin/create-fpm-pkg server /artifacts
+RUN cd /build && bin/create-fpm-pkg server /artifacts && bin/create-fpm-pkg client /artifacts
 
 VOLUME /artifacts
